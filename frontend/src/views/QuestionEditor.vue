@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { apiService } from '@/common/api.service.js'
 export default {
   name: "QuestionEditor",
   data() {
@@ -36,8 +37,14 @@ export default {
         this.error = "Ensure this field has no more 240 characters!";
       } else {
         let endpoint = "/api/questions/";
-        let method = "POST"
-
+        let method = "POST";
+        apiService(endpoint, method, { content: this.question_body })
+          .then(question_data => {
+            this.$router.push({
+              name: 'question',
+              params: { slug: question_data.slug }
+            })
+          })
       }
     }
   },
